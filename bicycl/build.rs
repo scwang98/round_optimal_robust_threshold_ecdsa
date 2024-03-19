@@ -2,7 +2,8 @@
 
 fn main() -> miette::Result<()> {
     let path = std::path::PathBuf::from("src");
-    let mut b = autocxx_build::Builder::new("src/lib.rs", [&path]).build()?;
+    let lib_path = std::path::PathBuf::from("/opt/homebrew/include");
+    let mut b = autocxx_build::Builder::new("src/lib.rs", [&path, &lib_path]).build()?;
     b
         .flag_if_supported("-std=c++14")
         .compile("bicycl");

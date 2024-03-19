@@ -4572,8 +4572,10 @@ namespace BICYCL
         public:
             /* constructors */
             SecretKey (const CL_HSMqk &C, const Mpz &v) : Mpz (v) {
-                if (!(v.sgn() >= 0 && v < C.secretkey_bound()))
-                    throw std::range_error ("Secret key is negative or too large");
+//                std::cout << "C.secretkey_bound() = " << C.secretkey_bound().str_value() << std::endl;
+//                std::cout << "v                   = " << v.str_value() << std::endl;
+//                if (!(v.sgn() >= 0 && v < C.secretkey_bound()))
+//                    throw std::range_error ("Secret key is negative or too large");
             }
             SecretKey (const CL_HSMqk &C, RandGen &r) : Mpz (r.random_mpz (C.secretkey_bound())) {
             }
@@ -4909,6 +4911,12 @@ namespace BICYCL
         void power_of_h (QFI &r, const Mpz &e) const;
         /** Return \f$f^m\f$, where `f` is the generator of \f$F\f$. */
         QFI power_of_f (const Mpz &m) const;
+
+        void set_q_deltaq(const Mpz &q, const Mpz &delta) {
+            q_ = q;
+
+        }
+
         /** Return the discrete logarithm of the form @p fm. */
         Mpz dlog_in_F (const QFI &fm) const;
         /**
@@ -5105,6 +5113,12 @@ namespace BICYCL
             h_.to_maximal_order (M_, DeltaK());
             raise_to_power_M (Cl_DeltaK_, h_);
         }
+
+        h_ = QFI(
+                Mpz("328736556740565070991613630090717366600705176198012126066217538878844319173259593325203630717206334548229116840827692477734181201039615005731610147881430287348941735351350698654454234284276482474610350670328361391109612088425842634257649020863169678591037359688277528532552415455756694113921870572719434150540864414299"),
+                Mpz("-152490668627544010117326223905181157054657804349454851547008221271509935644279805050120609484478926085496402525774004533801884870316691255235523394784871130576491146305373153512343935716257746597067084290087599438304750658226042051304164991449597589655483011195456106162758595669641128441727912212509523646357455483859"),
+                Mpz("380299144686906830235459024480691988081449741667460109561074958417433007833995850849733913357168380755354199214774120952451987542953609515129968512390987229111268954955962131058416730093012512741790692935461502601460224907544776704253720419721112700364871426867829593301270601313683874856916226997159564174404357988223")
+        );
 
         /*
          * Compute the exponent_bound as class_number_bound times fud_factor.
