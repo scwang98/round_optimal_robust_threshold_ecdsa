@@ -28,10 +28,8 @@ async fn main() {
     let mut rand_gen = RandGen::new();
     rand_gen.set_seed(&seed);
 
-    // let clgroup = CL_HSMqk::with_qnbits_rand_gen(300, 1, 150, &mut rand_gen, &Mpz::from(0i64), false);
     let q = Mpz::from("115792089237316195423570985008687907852837564279074904382605163141518161494337");
-    let p = Mpz::from("307126547361479455776363358289094652456659445472555015285313978108911772453994393121737281899771296855331711282157372365381650595050737431181614209179534482878685149058925435516746110091569902634722648457893194549573125352544692628246417539107888220274197596750762918950313171653363048388220339836961016300046552735836221937239803178316864847981553571084505297041732522938006956128151480969542908613418859");
-    let clgroup = CL_HSMqk::new(&q, 1, &p, &Mpz::from(0i64), false);
+    let clgroup = CL_HSMqk::with_rand_gen(&q, 1, 150, &mut rand_gen, &Mpz::from(0i64), false);
 
     let mut clsk = BTreeMap::<usize, SecretKey>::new();
     let mut clpk = BTreeMap::<usize, PublicKey>::new();
@@ -121,7 +119,7 @@ pub async fn protocol_dkg_presign_sign<M>(
     mut rand_gen: RandGen,
     clpk: BTreeMap<usize, PublicKey>,
     mysk: SecretKey,
-) -> Result<(SignatureECDSA, Point<Secp256k1>), Error<M::SendError, M::ReceiveError>>
+) -> Result<(SignatureECDSA, Point<Secp256k1>), Error<M::SendError, M::ReceiveError>>`
     where
         M: Mpc<ProtocolMessage=Msg>,
 {
